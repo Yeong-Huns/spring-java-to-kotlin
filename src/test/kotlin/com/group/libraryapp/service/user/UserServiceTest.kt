@@ -3,6 +3,7 @@ package com.group.libraryapp.service.user
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
+import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -73,5 +74,35 @@ open class UserServiceTest @Autowired constructor(
         }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("해당 이름(${nonExistName.name})의 유저를 찾을 수 없습니다.")
+    }
+
+    @Test
+    @DisplayName("유저 이름 업데이트에 성공한다.")
+    fun updateUserNameTest() {
+        /* given */
+        val savedUser = userRepository.save(User("김남운", null))
+        val request = UserUpdateRequest(savedUser.id, "이현성")
+
+        /* when */
+        userService.updateUserName(request)
+
+        /* then */
+        val result = userRepository.findAll()[0]
+        assertThat(result).extracting("name").isEqualTo("이현성")
+
+    }
+
+    @Test
+    @DisplayName("유저 삭제 테스트에 성공한다.")
+    fun deleteUserTest() {
+        /* given */
+        userRepository.save(User("공필두", 30))
+
+        /* when */
+        userService.deleteUser("공필두")
+
+        /* then */
+        val result = userRepository.findAll()
+        assertThat(result).isEmpty()
     }
 }
