@@ -1,5 +1,6 @@
 package com.group.libraryapp.service.user
 
+import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import org.junit.jupiter.api.Test
@@ -46,17 +47,17 @@ open class UserServiceTest @Autowired constructor(
     @DisplayName("저장된 사용자 이름으로 데이터를 조회에 성공한다.")
     fun findByUserNameSuccessTest() {
         /* given */
-        val request = UserCreateRequest("이지혜", null)
-        userService.saveUser(request)
+        userRepository.saveAll(
+            listOf(User("이지혜", 20), User("유중혁", null))
+        )
 
         /* when */
-        val foundUser = userRepository.findByName("이지혜")
-            .orElseThrow { IllegalArgumentException("해당 유저를 찾을 수 없습니다.") }
+        val results = userService.getUsers()
 
         /* then */
-        assertThat(foundUser)
+        assertThat(results).hasSize(2)
             .extracting("name", "age")
-            .containsExactly("이지혜", null)
+            .containsExactly(tuple("이지혜", 20), tuple("유중혁", null))
     }
 
     @Test
