@@ -84,7 +84,7 @@ open class BookServiceTest @Autowired constructor(
         /* when & then */
         assertThatThrownBy { bookService.loanBook(request) }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("진작 대출되어 있는 책입니다")
+            .hasMessage("해당 도서는 대출 중입니다.")
     }
 
     @Test

@@ -6,6 +6,8 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.6.21"
     /* 코틀린 jpa */
     id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
+    /* 코틀린 스프링 */
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
 }
 
 group = 'com.group'
