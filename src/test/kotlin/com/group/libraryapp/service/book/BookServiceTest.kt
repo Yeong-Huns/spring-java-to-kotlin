@@ -9,6 +9,7 @@ import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.repository.book.BookRepository
+import com.group.libraryapp.type.BookType
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -40,7 +41,7 @@ open class BookServiceTest @Autowired constructor(
     @DisplayName("책을 저장하는데 성공한다.")
     fun saveBook() {
         /* given */
-        val saveRequest = BookRequest("나니아 연대기")
+        val saveRequest = BookRequest(name = "나니아 연대기", type = BookType.COMPUTER)
 
         /* when */
         bookService.saveBook(saveRequest)
@@ -49,15 +50,15 @@ open class BookServiceTest @Autowired constructor(
         val result = bookRepository.findAll()
         assertThat(result).hasSize(1)
             .first()
-            .extracting("name")
-            .isEqualTo("나니아 연대기")
+            .extracting("name", "type")
+            .containsExactly("나니아 연대기", BookType.COMPUTER)
     }
 
     @Test
     @DisplayName("책을 빌리는데 성공한다.")
     fun loanBookTest() {
         /* given */
-        bookRepository.save(Book("해리포터"))
+        bookRepository.save(Book.fixture(name= "해리포터"))
         val savedUser = userRepository.save(User("강완수", null))
         val request = BookLoanRequest("강완수", "해리포터")
 
@@ -76,7 +77,7 @@ open class BookServiceTest @Autowired constructor(
     @DisplayName("책이 대출되어 있다면, 책을 빌리는데 실패한다.")
     fun loanBookFailTest() {
         /* given */
-        bookRepository.save(Book("해리포터"))
+        bookRepository.save(Book.fixture(name = "해리포터"))
         val savedUser = userRepository.save(User("강완수", null))
         userLoanHistoryRepository.save(UserLoanHistory(savedUser, "해리포터", false))
         val request = BookLoanRequest("강완수", "해리포터")
@@ -91,7 +92,7 @@ open class BookServiceTest @Autowired constructor(
     @DisplayName("책을 반납하는데 성공한다.")
     fun returnBook() {
         /* given */
-        val book = bookRepository.save(Book("해리포터"))
+        val book = bookRepository.save(Book.fixture("해리포터"))
         val savedUser = userRepository.save(User("강완수", null))
         savedUser.loanBook(book)
         val request = BookReturnRequest("강완수", "해리포터")
