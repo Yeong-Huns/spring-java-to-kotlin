@@ -1,14 +1,14 @@
 package com.group.libraryapp.service.book;
 
-import com.group.libraryapp.domain.book.BookRepository
-import com.group.libraryapp.domain.user.UserRepository
-import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
+import com.group.libraryapp.domain.book.Book
+import com.group.libraryapp.domain.user.User
+import com.group.libraryapp.repository.user.UserRepository;
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
+import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository;
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
-import com.group.libraryapp.domain.book.Book
-import com.group.libraryapp.domain.user.User
-import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
+import com.group.libraryapp.repository.book.BookRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
