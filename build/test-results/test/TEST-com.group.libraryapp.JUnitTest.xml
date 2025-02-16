@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.group.libraryapp.JUnitTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-02-16T08:35:07" hostname="HESIL" time="0.003">
+  <properties/>
+  <testcase name="test1()" classname="com.group.libraryapp.JUnitTest" time="0.002"/>
+  <testcase name="test2()" classname="com.group.libraryapp.JUnitTest" time="0.0"/>
+  <system-out><![CDATA[]]>&#x1f4cc;<![CDATA[모든 테스트 시작 전
+]]>&#x1f4d2;<![CDATA[각 테스트 시작 전
+테스트 1
+♥️각 테스트 종료 후
+]]>&#x1f4d2;<![CDATA[각 테스트 시작 전
+테스트 2
+♥️각 테스트 종료 후
+]]>&#x1f60a;<![CDATA[모든 테스트 종료 후
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

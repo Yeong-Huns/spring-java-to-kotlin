@@ -4,6 +4,8 @@ plugins {
     id 'java'
     /*코틀린*/
     id "org.jetbrains.kotlin.jvm" version "1.6.21"
+    /* 코틀린 jpa */
+    id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
 }
 
 group = 'com.group'
@@ -21,6 +23,8 @@ dependencies {
     /* 코틀린 */
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
+    /* 코틀린 reflect */
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
