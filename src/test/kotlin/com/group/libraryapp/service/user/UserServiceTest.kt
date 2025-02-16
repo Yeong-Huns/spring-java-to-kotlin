@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Transactional
 @SpringBootTest
-open class UserServiceTest @Autowired constructor(
+class UserServiceTest @Autowired constructor(
     private val userService: UserService,
     private val userRepository: UserRepository,
 ) {

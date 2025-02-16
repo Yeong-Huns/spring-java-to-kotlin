@@ -7,7 +7,6 @@ import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.repository.user.UserRepository
 import com.group.libraryapp.uitl.fail
 import com.group.libraryapp.uitl.findByIdOrThrow
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -36,7 +35,7 @@ class UserService (
     fun getUsers(): List<UserResponse>{
         return userRepository.findAll()
             .asSequence()
-            .map(::UserResponse)
+            .map(UserResponse::of)
             .toList()
     }
 

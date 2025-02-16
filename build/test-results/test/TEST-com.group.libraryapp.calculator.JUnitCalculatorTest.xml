@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.group.libraryapp.calculator.JUnitCalculatorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-02-16T11:35:42" hostname="HESIL" time="0.055">
+<testsuite name="com.group.libraryapp.calculator.JUnitCalculatorTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-02-16T14:40:28" hostname="HESIL" time="0.063">
   <properties/>
-  <testcase name="divisionByZeroTest()" classname="com.group.libraryapp.calculator.JUnitCalculatorTest" time="0.05"/>
+  <testcase name="divisionByZeroTest()" classname="com.group.libraryapp.calculator.JUnitCalculatorTest" time="0.057"/>
   <testcase name="multiTest()" classname="com.group.libraryapp.calculator.JUnitCalculatorTest" time="0.002"/>
   <testcase name="addTest()" classname="com.group.libraryapp.calculator.JUnitCalculatorTest" time="0.001"/>
   <testcase name="minusTest()" classname="com.group.libraryapp.calculator.JUnitCalculatorTest" time="0.0"/>
