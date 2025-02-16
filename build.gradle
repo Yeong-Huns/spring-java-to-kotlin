@@ -27,6 +27,10 @@ dependencies {
 
     /* 코틀린 reflect */
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
+
+    /* 코틀린 jackson (JSON Parse) */
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3'
+
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
