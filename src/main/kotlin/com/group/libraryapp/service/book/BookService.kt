@@ -7,6 +7,7 @@ import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.repository.book.BookRepository
 import com.group.libraryapp.repository.user.UserRepository
 import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository
+import com.group.libraryapp.uitl.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -33,24 +34,34 @@ class BookService(
 
     @Transactional
     fun loanBook(bookLoanRequest: BookLoanRequest) {
-        bookRepository.findByName(bookLoanRequest.bookName)
-            .orElseThrow { IllegalArgumentException("해당하는 이름의 도서를 찾을 수 없습니다.") }
-            .also {
+
+        val book = bookRepository.findByName(bookLoanRequest.bookName)
+            ?: fail("해당하는 이름의 도서를 찾을 수 없습니다.")
+
+        if (userLoanHistoryRepository.findByBookNameAndIsReturn(bookLoanRequest.bookName, false) != null) {
+            fail("해당 도서는 대출 중입니다.")
+        }
+
+        val user = userRepository.findByName(bookLoanRequest.userName)
+            ?: fail("해당하는 사용자를 찾을 수 없습니다.")
+
+        user.loanBook(book)
+
+        /*bookRepository.findByName(bookLoanRequest.bookName)
+            ?.also { book ->
                 if (userLoanHistoryRepository.findByBookNameAndIsReturn(bookLoanRequest.bookName, false) != null) {
                     throw IllegalArgumentException("해당 도서는 대출 중입니다.")
                 }
             }
-            .let { book ->
+            ?.let { book ->
                 userRepository.findByName(bookLoanRequest.userName)
-                    .orElseThrow { IllegalArgumentException("해당하는 사용자를 찾을 수 없습니다.") }
-                    .loanBook(book)
-            }
+                    ?.loanBook(book) ?: throw IllegalArgumentException("해당하는 사용자를 찾을 수 없습니다.")
+            } ?: throw IllegalArgumentException("해당하는 이름의 도서를 찾을 수 없습니다.")*/
     }
 
     @Transactional
     fun returnBook(request: BookReturnRequest) {
-        userRepository.findByName(request.userName)
-            .orElseThrow { IllegalArgumentException("해당하는 이름의 도서를 찾을 수 없습니다.") }
-            .returnBook(request.bookName)
+        userRepository.findByName(request.userName)?.returnBook(request.bookName)
+            ?: fail("해당하는 이름의 도서를 찾을 수 없습니다.")
     }
 }

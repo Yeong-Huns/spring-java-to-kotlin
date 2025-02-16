@@ -15,6 +15,6 @@ import java.util.Optional
  * 2025-02-16        Yeong-Huns       최초 생성
  */
 interface UserRepository: JpaRepository<User, Long> {
-    fun findByName(name: String): Optional<User>
+    fun findByName(name: String): User?
     fun existsByName(name: String): Boolean
 }

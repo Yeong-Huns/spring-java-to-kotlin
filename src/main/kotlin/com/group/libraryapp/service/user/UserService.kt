@@ -5,6 +5,9 @@ import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.repository.user.UserRepository
+import com.group.libraryapp.uitl.fail
+import com.group.libraryapp.uitl.findByIdOrThrow
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -39,15 +42,13 @@ class UserService (
 
     @Transactional
     fun updateUserName(userUpdateRequest: UserUpdateRequest){
-        userRepository.findById(userUpdateRequest.id)
-            .orElseThrow{IllegalArgumentException("해당하는 사용자가 존재하지 않습니다.")}
-            .updateName(userUpdateRequest.name)
+        userRepository.findByIdOrThrow(userUpdateRequest.id)
+            ?.updateName(userUpdateRequest.name)
     }
 
     @Transactional
     fun deleteUser(name: String){
-        userRepository.findByName(name)
-            .orElseThrow{IllegalArgumentException("해당하는 이름의 사용자가 존재하지 않습니다.")}
-            .let(userRepository::delete)
+        userRepository.findByName(name)?.let(userRepository::delete)
+            ?: fail("해당하는 이름의 사용자가 존재하지 않습니다.")
     }
 }

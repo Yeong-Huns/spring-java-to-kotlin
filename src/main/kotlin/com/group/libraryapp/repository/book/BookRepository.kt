@@ -15,5 +15,5 @@ import java.util.Optional
  * 2025-02-16        Yeong-Huns       최초 생성
  */
 interface BookRepository : JpaRepository<Book, Long> {
-    fun findByName(bookName: String): Optional<Book>
+    fun findByName(bookName: String): Book?
 }

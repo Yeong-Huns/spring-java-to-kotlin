@@ -4,6 +4,7 @@ import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.repository.user.UserRepository;
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.uitl.fail
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -70,7 +71,7 @@ open class UserServiceTest @Autowired constructor(
         /* when & then */
         assertThatThrownBy {
             userRepository.findByName("농심이")
-                .orElseThrow { IllegalArgumentException("해당 이름(${nonExistName.name})의 유저를 찾을 수 없습니다.") }
+                ?: fail("해당 이름(${nonExistName.name})의 유저를 찾을 수 없습니다.")
         }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("해당 이름(${nonExistName.name})의 유저를 찾을 수 없습니다.")
