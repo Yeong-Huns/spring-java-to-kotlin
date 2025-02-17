@@ -10,6 +10,7 @@ import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.repository.book.BookRepository
 import com.group.libraryapp.type.BookType
+import com.group.libraryapp.type.UserLoanStatus
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -30,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Transactional
 @SpringBootTest
-open class BookServiceTest @Autowired constructor(
+class BookServiceTest @Autowired constructor(
     private val bookService: BookService,
     private val bookRepository: BookRepository,
     private val userRepository: UserRepository,
@@ -69,8 +70,8 @@ open class BookServiceTest @Autowired constructor(
         val result = userLoanHistoryRepository.findAll()
         assertThat(result).hasSize(1)
             .first()
-            .extracting("user", "bookName", "isReturn")
-            .containsExactly(savedUser, "해리포터", false)
+            .extracting("user", "bookName", "status")
+            .containsExactly(savedUser, "해리포터", UserLoanStatus.LOANED)
     }
 
     @Test
@@ -79,7 +80,7 @@ open class BookServiceTest @Autowired constructor(
         /* given */
         bookRepository.save(Book.fixture(name = "해리포터"))
         val savedUser = userRepository.save(User("강완수", null))
-        userLoanHistoryRepository.save(UserLoanHistory(savedUser, "해리포터", false))
+        userLoanHistoryRepository.save(UserLoanHistory.fixture(savedUser, "해리포터"))
         val request = BookLoanRequest("강완수", "해리포터")
 
         /* when & then */
@@ -104,7 +105,7 @@ open class BookServiceTest @Autowired constructor(
         val result = userLoanHistoryRepository.findAll()
         assertThat(result).hasSize(1)
             .first()
-            .extracting("isReturn")
-            .isEqualTo(true)
+            .extracting("status")
+            .isEqualTo(UserLoanStatus.RETURNED)
     }
 }

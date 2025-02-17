@@ -18,6 +18,6 @@ fun fail(message: String): Nothing {
     throw IllegalArgumentException(message)
 }
 
-fun <T, ID> CrudRepository<T, ID>.findByIdOrThrow(id: ID): T {
-    return this.findByIdOrNull(id) ?: fail("[$id] 조회에 실패했습니다.")
+inline fun <reified T, ID> CrudRepository<T, ID>.findByIdOrThrow(id: ID): T {
+    return this.findByIdOrNull(id) ?: throw IllegalArgumentException("[${T::class.simpleName}] $id 조회에 실패했습니다.")
 }

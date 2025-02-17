@@ -1,13 +1,13 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.8'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '3.3.8'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     /*코틀린*/
-    id "org.jetbrains.kotlin.jvm" version "1.6.21"
+    id "org.jetbrains.kotlin.jvm" version "1.8.0"
     /* 코틀린 jpa */
-    id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
+    id 'org.jetbrains.kotlin.plugin.jpa' version "1.8.0"
     /* 코틀린 스프링 */
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
+    id 'org.jetbrains.kotlin.plugin.spring' version "1.8.0"
 }
 
 group = 'com.group'
@@ -26,8 +26,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 
     /* 코틀린 reflect */
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
-
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.8.0'
     /* 코틀린 jackson (JSON Parse) */
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3'
 

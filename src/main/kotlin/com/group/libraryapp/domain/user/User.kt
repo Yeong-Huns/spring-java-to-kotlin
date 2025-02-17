@@ -2,7 +2,7 @@ package com.group.libraryapp.domain.user
 
 import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
-import javax.persistence.*
+import jakarta.persistence.*
 
 /**
  *packageName    : com.group.libraryapp.domain.user
@@ -15,6 +15,7 @@ import javax.persistence.*
  * 2025-02-16        Yeong-Huns       최초 생성
  */
 @Entity
+@Table(name = "users")
 class User(
     var name: String,
     var age: Int?,
@@ -33,7 +34,7 @@ class User(
     }
 
     fun loanBook(book: Book) {
-        this.userLoanHistories.add(UserLoanHistory(this, book.name, false))
+        this.userLoanHistories.add(UserLoanHistory(this, book.name))
     }
 
     fun returnBook(bookName: String) {

@@ -3,8 +3,11 @@ package com.group.libraryapp.service.user
 import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.dto.user.response.BookHistoryResponse
+import com.group.libraryapp.dto.user.response.UserLoanHistoryResponse
 import com.group.libraryapp.dto.user.response.UserResponse
 import com.group.libraryapp.repository.user.UserRepository
+import com.group.libraryapp.type.UserLoanStatus
 import com.group.libraryapp.uitl.fail
 import com.group.libraryapp.uitl.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -49,5 +52,20 @@ class UserService (
     fun deleteUser(name: String){
         userRepository.findByName(name)?.let(userRepository::delete)
             ?: fail("해당하는 이름의 사용자가 존재하지 않습니다.")
+    }
+
+    @Transactional(readOnly = true)
+    fun getUserLoanHistories() : List<UserLoanHistoryResponse>{
+        userRepository.findAll().map { user ->
+            UserLoanHistoryResponse(
+                name = user.name,
+                books = user.userLoanHistories.map { history ->
+                    BookHistoryResponse(
+                        name = history.bookName,
+                        isReturn = history.status == UserLoanStatus.RETURNED
+                    )
+                }
+            )
+        }
     }
 }

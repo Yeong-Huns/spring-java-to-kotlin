@@ -7,6 +7,7 @@ import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.repository.book.BookRepository
 import com.group.libraryapp.repository.user.UserRepository
 import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository
+import com.group.libraryapp.type.UserLoanStatus
 import com.group.libraryapp.uitl.fail
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -38,7 +39,7 @@ class BookService(
         val book = bookRepository.findByName(bookLoanRequest.bookName)
             ?: fail("해당하는 이름의 도서를 찾을 수 없습니다.")
 
-        if (userLoanHistoryRepository.findByBookNameAndIsReturn(bookLoanRequest.bookName, false) != null) {
+        if (userLoanHistoryRepository.findByBookNameAndStatus(bookLoanRequest.bookName, UserLoanStatus.LOANED) != null) {
             fail("해당 도서는 대출 중입니다.")
         }
 
