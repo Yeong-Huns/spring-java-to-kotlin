@@ -1,5 +1,7 @@
 package com.group.libraryapp.dto.user.response
 
+import com.group.libraryapp.dto.book.response.BookHistoryResponse
+
 /**
  *packageName    : com.group.libraryapp.dto.user.response
  * fileName       : UserHistoryResponse
@@ -15,7 +17,3 @@ data class UserLoanHistoryResponse (
     val books: List<BookHistoryResponse>
 )
 
-data class BookHistoryResponse(
-    val name: String, // 책이름
-    val isReturn: Boolean,
-)

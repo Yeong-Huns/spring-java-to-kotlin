@@ -45,4 +45,5 @@ class User(
         /* 좀 더 깔끔하게 변경 */
         this.userLoanHistories.first{ history -> history.bookName == bookName }.doReturn()
     }
+
 }

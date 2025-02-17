@@ -1,15 +1,17 @@
 package com.group.libraryapp.service.user
 
+import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.user.User
-import com.group.libraryapp.repository.user.UserRepository;
 import com.group.libraryapp.dto.user.request.UserCreateRequest
 import com.group.libraryapp.dto.user.request.UserUpdateRequest
+import com.group.libraryapp.repository.user.UserRepository
+import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository
 import com.group.libraryapp.uitl.fail
+import org.assertj.core.api.Assertions.*
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.assertj.core.api.Assertions.*
-import org.junit.jupiter.api.DisplayName
 import org.springframework.transaction.annotation.Transactional
 
 /**
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional
 class UserServiceTest @Autowired constructor(
     private val userService: UserService,
     private val userRepository: UserRepository,
+    private val userLoanHistoryRepository: UserLoanHistoryRepository
 ) {
     @Test
     @DisplayName("유저 저장기능을 테스트한다.")
@@ -106,4 +109,80 @@ class UserServiceTest @Autowired constructor(
         val result = userRepository.findAll()
         assertThat(result).isEmpty()
     }
+
+    @Test
+    @DisplayName("대출 기록이 없는 유저도 응답에 포함된다")
+    fun getUserLoanHistories() {
+        /* given */
+        userRepository.save(User("영훈", null))
+
+        /* when */
+        val result = userService.getUserLoanHistories()
+
+        /* then */
+        assertThat(result).hasSize(1)
+            .first()
+            .extracting("name", "books")
+            .containsExactly("영훈", emptyList<Book>())
+    }
+
+
+    @Test
+    @DisplayName("대출 기록이 많은 유저의 응답을 확인한다.")
+    fun getUserLoanHistories2() {
+        /* given */
+        val savedUser = userRepository.save(User("영훈", null))
+
+        listOf(
+            Book.fixture("클린코드"),
+            Book.fixture("헤드퍼스트자바"),
+            Book.fixture("이펙티브자바"),
+            Book.fixture("이펙티브자바스크립트"),
+            Book.fixture("해리포터"),
+            Book.fixture("나니아 연대기"),
+        ).forEach(savedUser::loanBook)
+
+        /* when */
+        val result = userService.getUserLoanHistories()
+
+        /* then */
+        assertThat(result).hasSize(1)
+        assertThat(result[0].name).isEqualTo("영훈")
+        assertThat(result[0].books).hasSize(6)
+        assertThat(result[0].books).extracting("name")
+            .containsExactlyInAnyOrder("클린코드", "헤드퍼스트자바", "이펙티브자바", "이펙티브자바스크립트", "해리포터", "나니아 연대기")
+    }
+
+    /* 이런 테스트 코드는 지양하자 (작은 단위로 나눠서 2개를 만드는게 낫다 )*/
+    /*@Test
+    @DisplayName("대출 기록이 없는 유저와 많은 유저 모두 확인한다")
+    fun getUserLoanHistories3() {
+        *//* given *//*
+        val savedUsers = userRepository.saveAll(listOf(
+            User("순재", null),
+            User("덕선", null)
+        ))
+
+        listOf(
+            Book.fixture("클린코드"),
+            Book.fixture("헤드퍼스트자바"),
+            Book.fixture("이펙티브자바"),
+            Book.fixture("이펙티브자바스크립트"),
+            Book.fixture("해리포터"),
+            Book.fixture("나니아 연대기"),
+        ).forEach { savedUsers[0].loanBook(it) }
+
+        *//* when *//*
+        val result = userService.getUserLoanHistories()
+
+        *//* then *//*
+        assertThat(result).hasSize(2)
+        val userA = result.first{ it.name == "순재" }
+        assertThat(userA.books).hasSize(6)
+            .extracting("name")
+            .containsExactlyInAnyOrder("클린코드", "헤드퍼스트자바", "이펙티브자바", "이펙티브자바스크립트", "해리포터", "나니아 연대기")
+
+        val userB = result.first { it.name == "덕선" }
+        assertThat(userB.books).isEmpty()
+    }*/
 }
