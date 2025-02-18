@@ -2,6 +2,7 @@ package com.group.libraryapp.repository.user
 
 import com.group.libraryapp.domain.user.User
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import java.util.Optional
 
 /**
@@ -16,5 +17,9 @@ import java.util.Optional
  */
 interface UserRepository: JpaRepository<User, Long> {
     fun findByName(name: String): User?
-    fun existsByName(name: String): Boolean
+
+
+    /*@Query("select distinct u from User u left join fetch u.userLoanHistories") 동일한데? */
+    @Query("select u from User u left join u.userLoanHistories")
+    fun findAllWithHistories(): List<User>
 }

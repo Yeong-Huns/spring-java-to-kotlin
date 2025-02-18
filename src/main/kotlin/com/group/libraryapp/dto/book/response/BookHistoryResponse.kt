@@ -1,5 +1,8 @@
 package com.group.libraryapp.dto.book.response
 
+import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
+import com.group.libraryapp.type.UserLoanStatus
+
 /**
  *packageName    : com.group.libraryapp.dto.book.response
  * fileName       : BookHistoryResponse
@@ -13,4 +16,13 @@ package com.group.libraryapp.dto.book.response
 data class BookHistoryResponse(
     val name: String, // 책이름
     val isReturn: Boolean,
-)
+){
+    companion object{
+        fun fromUserLoanHistory(history: UserLoanHistory): BookHistoryResponse{
+            return BookHistoryResponse(
+                name = history.bookName,
+                isReturn = history.status == UserLoanStatus.RETURNED
+            )
+        }
+    }
+}

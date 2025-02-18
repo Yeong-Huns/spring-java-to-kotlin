@@ -1,5 +1,6 @@
 package com.group.libraryapp.dto.user.response
 
+import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.dto.book.response.BookHistoryResponse
 
 /**
@@ -15,5 +16,14 @@ import com.group.libraryapp.dto.book.response.BookHistoryResponse
 data class UserLoanHistoryResponse (
     val name: String, // 유저이름
     val books: List<BookHistoryResponse>
-)
+) {
+    companion object {
+        fun fromUser(user: User): UserLoanHistoryResponse {
+            return UserLoanHistoryResponse(
+                name = user.name,
+                books = user.userLoanHistories.map (BookHistoryResponse::fromUserLoanHistory)
+            )
+        }
+    }
+}
 
