@@ -4,6 +4,7 @@ import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.repository.book.BookRepository
 import com.group.libraryapp.repository.user.UserRepository
 import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository
@@ -60,9 +61,26 @@ class BookService(
             } ?: throw IllegalArgumentException("해당하는 이름의 도서를 찾을 수 없습니다.")*/
     }
 
+    @Transactional(readOnly = true)
+    fun countLoanedBook(): Int {
+        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).count()
+    }
+
+    @Transactional(readOnly = true)
+    fun getBookStatistics(): List<BookStatResponse> {
+        val results = mutableListOf<BookStatResponse>()
+        bookRepository.findAll().forEach { book ->
+            results.firstOrNull { book.type == it.type }?.plusOne()
+                ?: results.add(BookStatResponse(book.type, 1))
+        }
+        return results
+    }
+
     @Transactional
     fun returnBook(request: BookReturnRequest) {
         userRepository.findByName(request.userName)?.returnBook(request.bookName)
             ?: fail("해당하는 이름의 도서를 찾을 수 없습니다.")
     }
+
+
 }
