@@ -15,11 +15,11 @@ import java.util.Optional
  * -----------------------------------------------------------
  * 2025-02-16        Yeong-Huns       최초 생성
  */
-interface UserRepository: JpaRepository<User, Long> {
+interface UserRepository: JpaRepository<User, Long>, UserRepositoryCustom {
     fun findByName(name: String): User?
 
 
     /*@Query("select distinct u from User u left join fetch u.userLoanHistories") 동일한데? */
-    @Query("select u from User u left join u.userLoanHistories")
-    fun findAllWithHistories(): List<User>
+    /*@Query("select u from User u left join u.userLoanHistories")
+    fun findAllWithHistories(): List<User>*/
 }

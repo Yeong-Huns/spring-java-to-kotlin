@@ -16,6 +16,7 @@ import java.util.Optional
  * 2025-02-16        Yeong-Huns       최초 생성
  */
 interface UserLoanHistoryRepository: JpaRepository<UserLoanHistory, Long> {
+    fun findByBookName(bookName: String): UserLoanHistory?
     fun findByBookNameAndStatus(bookName: String, status: UserLoanStatus): UserLoanHistory?
     fun findAllByStatus(status: UserLoanStatus): List<UserLoanHistory>
     fun countByStatus(status: UserLoanStatus): Long

@@ -8,6 +8,8 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.jpa' version "1.8.0"
     /* 코틀린 스프링 */
     id 'org.jetbrains.kotlin.plugin.spring' version "1.8.0"
+    /* 코틀린 kapt */
+    id 'org.jetbrains.kotlin.kapt' version "1.8.0"
 }
 
 group = 'com.group'
@@ -29,6 +31,11 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.8.0'
     /* 코틀린 jackson (JSON Parse) */
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3'
+    /* 쿼리 DSL */
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -43,4 +50,8 @@ compileKotlin {
     kotlinOptions {
         jvmTarget = "17"
     }
+}
+
+kapt {
+    correctErrorTypes = true
 }

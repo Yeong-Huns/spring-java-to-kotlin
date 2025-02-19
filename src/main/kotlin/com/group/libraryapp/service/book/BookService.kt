@@ -5,8 +5,10 @@ import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
 import com.group.libraryapp.dto.book.response.BookStatResponse
+import com.group.libraryapp.repository.book.BookQueryDslRepository
 import com.group.libraryapp.repository.book.BookRepository
 import com.group.libraryapp.repository.user.UserRepository
+import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryQueryDslRepository
 import com.group.libraryapp.repository.user.userLoanHistory.UserLoanHistoryRepository
 import com.group.libraryapp.type.UserLoanStatus
 import com.group.libraryapp.uitl.fail
@@ -28,6 +30,8 @@ class BookService(
     private val bookRepository: BookRepository,
     private val userRepository: UserRepository,
     private val userLoanHistoryRepository: UserLoanHistoryRepository,
+    private val bookQueryDslRepository: BookQueryDslRepository,
+    private val userLoanHistoryQueryDslRepository: UserLoanHistoryQueryDslRepository
 ) {
     @Transactional
     fun saveBook(saveRequest: BookRequest) {
@@ -40,7 +44,7 @@ class BookService(
         val book = bookRepository.findByName(bookLoanRequest.bookName)
             ?: fail("해당하는 이름의 도서를 찾을 수 없습니다.")
 
-        if (userLoanHistoryRepository.findByBookNameAndStatus(bookLoanRequest.bookName, UserLoanStatus.LOANED) != null) {
+        if (userLoanHistoryQueryDslRepository.find(bookLoanRequest.bookName, UserLoanStatus.LOANED) != null) {
             fail("해당 도서는 대출 중입니다.")
         }
 
@@ -63,12 +67,12 @@ class BookService(
 
     @Transactional(readOnly = true)
     fun countLoanedBook(): Int {
-        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
+        return userLoanHistoryQueryDslRepository.count(UserLoanStatus.LOANED).toInt()
     }
 
     @Transactional(readOnly = true)
     fun getBookStatistics(): List<BookStatResponse> {
-        return bookRepository.getStats()
+        return bookQueryDslRepository.getStats()
     }
 
     @Transactional
